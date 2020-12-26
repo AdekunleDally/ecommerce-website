@@ -75,7 +75,7 @@ class App extends Component{
   }
 }
 
-const mapStateToProps = createStructuredSelector({
+const mapStateToProps = createStructuredSelector({ // solves the Redirect issue
   currentUser: selectCurrentUser
 })
 

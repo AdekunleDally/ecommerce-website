@@ -1,5 +1,6 @@
 export const addItemToCart=(cartItems, cartItemToAdd)=>{
   
+  //find() returns the first item in an array based on a passed condition 
   const existingCartItem= cartItems.find(cartItem=>cartItem.id===cartItemToAdd.id)
 
    

@@ -2,7 +2,7 @@ import CartActionTypes from './cart.types';
 import {addItemToCart, removeItemFromCart} from './cart.utils';
 const INITIAL_STATE={
     hidden:true,
-    cartItems:[]
+    cartItems:[] //for saving cart items that were clicked
 }
 
 const CartReducer=(state=INITIAL_STATE, action)=>{
@@ -16,7 +16,8 @@ const CartReducer=(state=INITIAL_STATE, action)=>{
           case CartActionTypes.ADD_ITEM:
               return{
                   ...state,
-                //  cartItems:[...state.cartItems, action.payload]
+                //  cartItems:[...state.cartItems, action.payload] We make our cartItems array to be  a spreaded old cart items 
+                //plus the new cart item that got fired.
                   cartItems:addItemToCart(state.cartItems, action.payload)
                 }
 

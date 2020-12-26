@@ -38,7 +38,7 @@ const Header=({currentUser, hidden})=>(
 
 const mapStateToProps = createStructuredSelector({ //This function allows us access state(i.e the root-reducer)
   currentUser: selectCurrentUser,
-  hidden: selectCartHidden
+  hidden: selectCartHidden  // we get access to the hidden state from the cart reducer
 })
 export default connect(mapStateToProps)(Header);
 
