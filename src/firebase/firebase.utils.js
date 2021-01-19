@@ -1,6 +1,7 @@
 import firebase from 'firebase/app' ; 
 import 'firebase/firestore';
 import 'firebase/auth';
+//import { batch } from 'react-redux';
 
 const config= {
     apiKey: "AIzaSyBDbASq0kEMIcuhJc0ut4AGqkBlbxY2l3U",
@@ -16,6 +17,12 @@ const config= {
     if(!userAuth) return;
     const userRef= firestore.doc(`users/${userAuth.uid}`);
     const snapShot = await userRef.get();
+    
+    //const collectionRef= firestore.collection('users')
+   // const collectionSnapshots = await collectionRef.get();
+    //collectionsSnapshots.docs --- Gives us the array of snapshots of the documents
+   // console.log(collectionSnapshots.docs.map(doc=>doc.data()))
+   // console.log(collectionSnapshots)
    // console.log(snapShot)
 
     if(!snapShot.exists){
@@ -30,7 +37,40 @@ const config= {
     }
 
     return userRef;
+  };
+
+  export const addCollectionAndDocuments = async (collectionKey, objectsToAdd)=>{
+    const collectionRef = firestore.collection(collectionKey)
+    console.log("The collectionRef is : ",collectionRef)
+
+    const batch= firestore.batch();
+    objectsToAdd.forEach(obj => {
+      const newDocRef= collectionRef.doc();
+      batch.set(newDocRef,obj)
+    });
+
+    return await batch.commit();
   }
+
+  export const convertCollectionsSnapshotToMap = collections =>{
+    const transformedCollection = collections.docs.map(doc=>{
+      const {title, items} = doc.data();
+     
+      return {
+        routeName: encodeURI(title.toLowerCase()),
+        id: doc.id,
+        title,
+        items
+      };
+    });
+   // console.log("THE TRASNFORMED COLLECTION IS ::",transformedCollection)
+
+    return transformedCollection.reduce((accumulator,collection)=>{
+      accumulator[collection.title.toLowerCase()] =collection;
+      return accumulator;
+    }, {});
+
+  };
  
 
   firebase.initializeApp(config);
